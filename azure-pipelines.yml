@@ -19,13 +19,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
-    KeyVaultName: 'send-grid-emailer-vault'
-    SecretsFilter: '*'
-    RunAsPreJob: false
-
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
