@@ -20,9 +20,9 @@ pool:
 
 steps:
 - script: |
-    echo "vResourceManagerConnection= $(vResourceManagerConnection)"
-    echo "vSubscriptionName= $(vSubscriptionName)"
-    echo "Location= $(vLocation)"
+    echo "vResourceManagerConnection= $(ResourceManagerConnection)"
+    echo "vSubscriptionName= $(SubscriptionName)"
+    echo "Location= $(Location)"
   displayName: 'Log variable values'
 
 - task: AzureResourceManagerTemplateDeployment@3
