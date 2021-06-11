@@ -19,6 +19,10 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- script: |
+    echo "vResourceManagerConnection=$(vResourceManagerConnection)"
+    echo "vSubscriptionName=$(vSubscriptionName)"
+    echo "Location=$(vLocation)"
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
