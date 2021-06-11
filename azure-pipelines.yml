@@ -6,6 +6,11 @@
 trigger:
 - master
 
+variables:
+  Res_Mgr_Con: $(ResourceManagerConnection)
+  Subs_Name: $(SubscriptionId)
+  Loc: $(Location)
+
 pool:
   vmImage: ubuntu-latest
 
@@ -13,11 +18,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: $(ResourceManagerConnection)
-    subscriptionName: $(SubscriptionId)
+    ConnectedServiceName: $(Res_Mgr_Con)
+    subscriptionName: $(Subs_Name)
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
-    location: $(Location)
+    location: $(Loc)
     templateLocation: 'Linked artifact'
     csmFile: '**/LogicApp.json'
     csmParametersFile: '**/LogicApp.parameters.json'
