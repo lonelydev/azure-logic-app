@@ -3,6 +3,15 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+variables:
+- group: "azure-logic-app-deploy"
+- name: vResourceManagerConnection
+  value: $[variables.ResourceManagerConnection]
+- name: vSubscriptionName
+  value: $[variables.SubscriptionName]
+- name: vLocation
+  value: $[variables.Location]
+
 trigger:
 - master
 
@@ -20,11 +29,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: $(ResourceManagerConnection)
-    subscriptionName: $(SubscriptionName)
+    ConnectedServiceName: $(vResourceManagerConnection)
+    subscriptionName: $(vSubscriptionName)
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
-    location: $(Location)
+    location: $(vLocation)
     templateLocation: 'Linked artifact'
     csmFile: '**/LogicApp.json'
     csmParametersFile: '**/LogicApp.parameters.json'
