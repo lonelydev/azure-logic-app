@@ -23,7 +23,7 @@ steps:
     echo "vResourceManagerConnection= $(vResourceManagerConnection)"
     echo "vSubscriptionName= $(vSubscriptionName)"
     echo "Location= $(vLocation)"
-displayName: 'Log variable values'
+  displayName: 'Log variable values'
 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
