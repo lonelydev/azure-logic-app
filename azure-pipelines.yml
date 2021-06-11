@@ -6,23 +6,25 @@
 trigger:
 - master
 
-variables:
-  Res_Mgr_Con: $(ResourceManagerConnection)
-  Subs_Name: $(SubscriptionId)
-  Loc: $(Location)
-
 pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+    KeyVaultName: 'send-grid-emailer-vault'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
-    subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
+    ConnectedServiceName: $(ResourceManagerConnection)
+    subscriptionName: $(SubscriptionName)
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
-    location: 'UK South'
+    location: $(Location)
     templateLocation: 'Linked artifact'
     csmFile: '**/LogicApp.json'
     csmParametersFile: '**/LogicApp.parameters.json'
