@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "SendGridEmaler"
+    },
+    "logicAppLocation": {
+      "value": "uksouth"
+    },
+    "sendgrid_1_apiKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/d6d0fd8c-aab6-4713-b2f1-c9a0375d687d/resourceGroups/AzureLogicApp/providers/Microsoft.KeyVault/vaults/send-grid-emailer-vault"
+        },
+        "secretName": "SendGridApiKey"
+      }
+    }
+  }
+}
