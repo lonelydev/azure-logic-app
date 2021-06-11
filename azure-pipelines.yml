@@ -6,11 +6,11 @@
 variables:
 - group: "azure-logic-app-deploy"
 - name: vResourceManagerConnection
-  value: $[variables.ResourceManagerConnection]
+  value: $[ResourceManagerConnection]
 - name: vSubscriptionName
-  value: $[variables.SubscriptionName]
+  value: $[SubscriptionName]
 - name: vLocation
-  value: $[variables.Location]
+  value: $[Location]
 
 trigger:
 - master
@@ -20,9 +20,11 @@ pool:
 
 steps:
 - script: |
-    echo "vResourceManagerConnection=$(vResourceManagerConnection)"
-    echo "vSubscriptionName=$(vSubscriptionName)"
-    echo "Location=$(vLocation)"
+    echo "vResourceManagerConnection= $(vResourceManagerConnection)"
+    echo "vSubscriptionName= $(vSubscriptionName)"
+    echo "Location= $(vLocation)"
+displayName: 'Log variable values'
+
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
