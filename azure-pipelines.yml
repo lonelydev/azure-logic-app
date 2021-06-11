@@ -13,8 +13,8 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: $(ResourceManagerConnection)
-    subscriptionId: $(SubscriptionId)
+    ConnectedServiceName: $(ResourceManagerConnection)
+    subscriptionName: $(SubscriptionId)
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
     location: $(Location)
