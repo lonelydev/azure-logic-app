@@ -6,11 +6,11 @@
 variables:
 - group: "azure-logic-app-deploy"
 - name: vResourceManagerConnection
-  value: $[ResourceManagerConnection]
+  value: $[variables.ResourceManagerConnection]
 - name: vSubscriptionName
-  value: $[SubscriptionName]
+  value: $[variables.SubscriptionName]
 - name: vLocation
-  value: $[Location]
+  value: $[variables.Location]
 
 trigger:
 - master
@@ -28,11 +28,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: $(vResourceManagerConnection)
-    subscriptionName: $(vSubscriptionName)
+    ConnectedServiceName: $(ResourceManagerConnection)
+    subscriptionName: $(SubscriptionName)
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
-    location: $(vLocation)
+    location: $(Location)
     templateLocation: 'Linked artifact'
     csmFile: '**/LogicApp.json'
     csmParametersFile: '**/LogicApp.parameters.json'
