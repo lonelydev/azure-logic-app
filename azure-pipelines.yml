@@ -18,11 +18,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: $(Res_Mgr_Con)
-    subscriptionName: $(Subs_Name)
+    ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+    subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
-    location: $(Loc)
+    location: 'UK South'
     templateLocation: 'Linked artifact'
     csmFile: '**/LogicApp.json'
     csmParametersFile: '**/LogicApp.parameters.json'
