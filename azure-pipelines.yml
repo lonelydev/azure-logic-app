@@ -19,8 +19,8 @@ stages:
 - stage: 'HardCoded'
   displayName: 'DeployHardCoded'
   jobs:
-  - deployment: 'Deploy Hardcoded'
-    displayName: 'Deploy Hardcoded'
+  - deployment: 'DeployHardcoded'
+    displayName: DeployHardcoded
     pool:
       vmImage: ubuntu-latest
       workspace:
@@ -46,8 +46,8 @@ stages:
 - stage: RegularPV
   displayName: DeployRegularPV
   jobs:
-  - deployment: 'Deploy Regular PV'
-    displayName: 'Deploy Regular PV'
+  - deployment: DeployRegularPV
+    displayName: DeployRegularPV
     pool:
       vmImage: ubuntu-latest
       workspace:
@@ -73,8 +73,8 @@ stages:
 - stage: SecretPV
   displayName: DeploySecretPV
   jobs:
-  - deployment: 'Deploy Secret PV'
-    displayName: 'Deploy Secret PV'
+  - deployment: DeploySecretPV
+    displayName: DeploySecretPV
     pool:
       vmImage: ubuntu-latest
       workspace:
