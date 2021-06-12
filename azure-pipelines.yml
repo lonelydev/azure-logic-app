@@ -17,7 +17,7 @@ trigger:
 
 stages:
 - stage: 'HardCoded'
-  displayName: 'HardCoded'
+  displayName: 'DeployHardCoded'
   jobs:
   - deployment: 'Deploy Hardcoded'
     displayName: 'Deploy Hardcoded'
@@ -43,8 +43,8 @@ stages:
               csmParametersFile: 'LogicApp.parameters.json'
               deploymentMode: 'Incremental'
 
-- stage: Regular
-  displayName: 'Deploy Regular'
+- stage: RegularPV
+  displayName: DeployRegularPV
   jobs:
   - deployment: 'Deploy Regular PV'
     displayName: 'Deploy Regular PV'
@@ -71,7 +71,7 @@ stages:
               deploymentMode: 'Incremental'
 
 - stage: SecretPV
-  displayName: 'Deploy Secret PV'
+  displayName: DeploySecretPV
   jobs:
   - deployment: 'Deploy Secret PV'
     displayName: 'Deploy Secret PV'
@@ -96,26 +96,3 @@ stages:
               csmFile: '**/LogicApp.json'
               csmParametersFile: '**/LogicApp.parameters.json'
               deploymentMode: 'Incremental'
-
-# steps:
-# - script: |
-#     echo "vResourceManagerConnection= $(ResourceManagerConnection)"
-#     echo "vSubscriptionName= $(SubscriptionName)"
-#     echo "Location= $(Location)"
-#     echo "G_RES_MGR_CON= $(G_RES_MGR_CON)"
-#     echo "G_SUB_NAME= $(G_SUB_NAME)"
-#     echo "G_LOC= $(G_LOC)"
-#   displayName: 'Log variable values'
-
-# - task: AzureResourceManagerTemplateDeployment@3
-#   inputs:
-#     deploymentScope: 'Resource Group'
-#     ConnectedServiceName: "$(G_RES_MGR_CON)"
-#     subscriptionName: "$(G_SUB_NAME)"
-#     action: 'Create Or Update Resource Group'
-#     resourceGroupName: 'AzureLogicApp'
-#     location: "$(G_LOC)"
-#     templateLocation: 'Linked artifact'
-#     csmFile: '**/LogicApp.json'
-#     csmParametersFile: '**/LogicApp.parameters.json'
-#     deploymentMode: 'Incremental'
