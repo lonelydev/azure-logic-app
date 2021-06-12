@@ -70,29 +70,35 @@ stages:
               csmParametersFile: '**/LogicApp.parameters.json'
               deploymentMode: 'Incremental'
 
-- stage: SecretPV
-  displayName: DeploySecretPV
+- stage: PrintSecrets
   jobs:
-  - deployment: DeploySecretPV
-    displayName: DeploySecretPV
-    pool:
-      vmImage: ubuntu-latest
-      workspace:
-        clean: all
-    environment: Development
-    strategy: 
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceManagerTemplateDeployment@3
-            inputs:
-              deploymentScope: 'Resource Group'
-              ConnectedServiceName: $(PVSConnectedServiceName)
-              subscriptionName: $(PVSSubscriptionId)
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: $(PVSResourceGroup)
-              location: $(PVSLocation)
-              templateLocation: 'Linked artifact'
-              csmFile: '**/LogicApp.json'
-              csmParametersFile: '**/LogicApp.parameters.json'
-              deploymentMode: 'Incremental'
+  - job:
+    steps:
+    - bash: echo "$(PVSConnectedServiceName) $(PVSSubscriptionId) $(PVSLocation)" > pipelinesecrets.txt
+  
+# - stage: SecretPV
+#   displayName: DeploySecretPV
+#   jobs:
+#   - deployment: DeploySecretPV
+#     displayName: DeploySecretPV
+#     pool:
+#       vmImage: ubuntu-latest
+#       workspace:
+#         clean: all
+#     environment: Development
+#     strategy: 
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureResourceManagerTemplateDeployment@3
+#             inputs:
+#               deploymentScope: 'Resource Group'
+#               ConnectedServiceName: $(PVSConnectedServiceName)
+#               subscriptionName: $(PVSSubscriptionId)
+#               action: 'Create Or Update Resource Group'
+#               resourceGroupName: $(PVSResourceGroup)
+#               location: $(PVSLocation)
+#               templateLocation: 'Linked artifact'
+#               csmFile: '**/LogicApp.json'
+#               csmParametersFile: '**/LogicApp.parameters.json'
+#               deploymentMode: 'Incremental'
