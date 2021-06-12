@@ -4,6 +4,12 @@
 # https://aka.ms/yaml
 
 variables:
+- name: G_RES_MGR_CON
+  value: $(ResourceManagerConnection)
+- name: G_SUB_NAME
+  value: $(SubscriptionName)
+- name: G_LOC
+  value: $(Location)
 - group: "azure-logic-app-deploy"
 - name: vResourceManagerConnection
   value: $[variables.ResourceManagerConnection]
@@ -23,6 +29,9 @@ steps:
     echo "vResourceManagerConnection= $(ResourceManagerConnection)"
     echo "vSubscriptionName= $(SubscriptionName)"
     echo "Location= $(Location)"
+    echo "G_RES_MGR_CON= $(G_RES_MGR_CON)"
+    echo "G_SUB_NAME= $(G_SUB_NAME)"
+    echo "G_LOC= $(G_LOC)"
   displayName: 'Log variable values'
 
 - task: AzureResourceManagerTemplateDeployment@3
