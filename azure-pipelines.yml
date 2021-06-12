@@ -39,8 +39,8 @@ stages:
               resourceGroupName: 'AzureLogicApp'
               location: 'UK South'
               templateLocation: 'Linked artifact'
-              csmFile: 'LogicApp.json'
-              csmParametersFile: 'LogicApp.parameters.json'
+              csmFile: '**/LogicApp.json'
+              csmParametersFile: '**/LogicApp.parameters.json'
               deploymentMode: 'Incremental'
 
 - stage: RegularPV
