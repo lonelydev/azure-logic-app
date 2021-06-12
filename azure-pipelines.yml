@@ -19,7 +19,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: Deploying with HardCoded Values
+- stage: HardCoded
   displayName: Deploy LogicApp with HardCoded Values
   jobs:
   - deployment: Deploy with hardcoded string values
@@ -46,7 +46,7 @@ stages:
               csmParametersFile: 'LogicApp.parameters.json'
               deploymentMode: 'Incremental'
 
-- stage: Deploying with Regular Pipeline Variables
+- stage: Regular
   displayName: Deploy LogicApp with Regular Pipeline Variables
   jobs:
   - deployment: Deploy with Regular Pipeline Variables
@@ -73,7 +73,7 @@ stages:
               csmParametersFile: '**/LogicApp.parameters.json'
               deploymentMode: 'Incremental'
 
-- stage: Deploying with Secret Pipeline Variables
+- stage: SecretPV
   displayName: Deploy LogicApp with Secret Pipeline Variables
   jobs:
   - deployment: Deploy with Secret Pipeline Variables
