@@ -4,18 +4,12 @@
 # https://aka.ms/yaml
 
 variables:
-- name: G_RES_MGR_CON
-  value: $(ResourceManagerConnection)
-- name: G_SUB_NAME
-  value: $(SubscriptionName)
-- name: G_LOC
-  value: $(Location)
-- group: "azure-logic-app-deploy"
-- name: vResourceManagerConnection
+- group: azure-logic-app-deploy
+- name: vgsResourceManagerConnection
   value: $[variables.ResourceManagerConnection]
-- name: vSubscriptionName
+- name: vgsSubscriptionName
   value: $[variables.SubscriptionName]
-- name: vLocation
+- name: vgsLocation
   value: $[variables.Location]
 
 trigger:
@@ -24,25 +18,107 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: |
-    echo "vResourceManagerConnection= $(ResourceManagerConnection)"
-    echo "vSubscriptionName= $(SubscriptionName)"
-    echo "Location= $(Location)"
-    echo "G_RES_MGR_CON= $(G_RES_MGR_CON)"
-    echo "G_SUB_NAME= $(G_SUB_NAME)"
-    echo "G_LOC= $(G_LOC)"
-  displayName: 'Log variable values'
+stages:
+- stage: Deploying with HardCoded Values
+  displayName: Deploy LogicApp with HardCoded Values
+  jobs:
+  - deployment: Deploy with hardcoded string values
+    displayName: Deploy with hardcoded string values
+    pool:
+      vmImage: ubuntu-latest
+      workspace:
+        clean: all
+    environment: Development
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+              subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'AzureLogicApp'
+              location: 'UK South'
+              templateLocation: 'Linked artifact'
+              csmFile: 'LogicApp.json'
+              csmParametersFile: 'LogicApp.parameters.json'
+              deploymentMode: 'Incremental'
 
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    ConnectedServiceName: "$(G_RES_MGR_CON)"
-    subscriptionName: "$(G_SUB_NAME)"
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'AzureLogicApp'
-    location: "$(G_LOC)"
-    templateLocation: 'Linked artifact'
-    csmFile: '**/LogicApp.json'
-    csmParametersFile: '**/LogicApp.parameters.json'
-    deploymentMode: 'Incremental'
+- stage: Deploying with Regular Pipeline Variables
+  displayName: Deploy LogicApp with Regular Pipeline Variables
+  jobs:
+  - deployment: Deploy with Regular Pipeline Variables
+    displayName: Deploy with Regular Pipeline Variables
+    pool:
+      vmImage: ubuntu-latest
+      workspace:
+        clean: all
+    environment: Development
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              ConnectedServiceName: $(PVConnectedServiceName)
+              subscriptionName: $(PVSubscriptionId)
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: $(PVResourceGroup)
+              location: $(PVLocation)
+              templateLocation: 'Linked artifact'
+              csmFile: '**/LogicApp.json'
+              csmParametersFile: '**/LogicApp.parameters.json'
+              deploymentMode: 'Incremental'
+
+- stage: Deploying with Secret Pipeline Variables
+  displayName: Deploy LogicApp with Secret Pipeline Variables
+  jobs:
+  - deployment: Deploy with Secret Pipeline Variables
+    displayName: Deploy with Secret Pipeline Variables
+    pool:
+      vmImage: ubuntu-latest
+      workspace:
+        clean: all
+    environment: Development
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              ConnectedServiceName: $(PVSConnectedServiceName)
+              subscriptionName: $(PVSSubscriptionId)
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: $(PVSResourceGroup)
+              location: $(PVSLocation)
+              templateLocation: 'Linked artifact'
+              csmFile: '**/LogicApp.json'
+              csmParametersFile: '**/LogicApp.parameters.json'
+              deploymentMode: 'Incremental'
+
+# steps:
+# - script: |
+#     echo "vResourceManagerConnection= $(ResourceManagerConnection)"
+#     echo "vSubscriptionName= $(SubscriptionName)"
+#     echo "Location= $(Location)"
+#     echo "G_RES_MGR_CON= $(G_RES_MGR_CON)"
+#     echo "G_SUB_NAME= $(G_SUB_NAME)"
+#     echo "G_LOC= $(G_LOC)"
+#   displayName: 'Log variable values'
+
+# - task: AzureResourceManagerTemplateDeployment@3
+#   inputs:
+#     deploymentScope: 'Resource Group'
+#     ConnectedServiceName: "$(G_RES_MGR_CON)"
+#     subscriptionName: "$(G_SUB_NAME)"
+#     action: 'Create Or Update Resource Group'
+#     resourceGroupName: 'AzureLogicApp'
+#     location: "$(G_LOC)"
+#     templateLocation: 'Linked artifact'
+#     csmFile: '**/LogicApp.json'
+#     csmParametersFile: '**/LogicApp.parameters.json'
+#     deploymentMode: 'Incremental'
