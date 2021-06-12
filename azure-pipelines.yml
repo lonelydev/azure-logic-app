@@ -38,8 +38,6 @@ stages:
           csmFile: '**/LogicApp.json'
           csmParametersFile: '**/LogicApp.parameters.json'
           deploymentMode: 'Incremental'
-    uses: 
-     repositories: ['azure-logic-app']
 
 - stage: RegularPV
   displayName: DeployRegularPV
@@ -63,8 +61,6 @@ stages:
         csmFile: '**/LogicApp.json'
         csmParametersFile: '**/LogicApp.parameters.json'
         deploymentMode: 'Incremental'
-    uses: 
-     repositories: ['azure-logic-app']
 
 - stage: PrintSecrets
   jobs:
