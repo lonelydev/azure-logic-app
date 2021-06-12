@@ -15,15 +15,12 @@ variables:
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
-
 stages:
-- stage: HardCoded
-  displayName: Deploy LogicApp with HardCoded Values
+- stage: 'HardCoded'
+  displayName: 'HardCoded'
   jobs:
-  - deployment: Deploy with hardcoded string values
-    displayName: Deploy with hardcoded string values
+  - deployment: 'Deploy Hardcoded'
+    displayName: 'Deploy Hardcoded'
     pool:
       vmImage: ubuntu-latest
       workspace:
@@ -47,10 +44,10 @@ stages:
               deploymentMode: 'Incremental'
 
 - stage: Regular
-  displayName: Deploy LogicApp with Regular Pipeline Variables
+  displayName: 'Deploy Regular'
   jobs:
-  - deployment: Deploy with Regular Pipeline Variables
-    displayName: Deploy with Regular Pipeline Variables
+  - deployment: 'Deploy Regular PV'
+    displayName: 'Deploy Regular PV'
     pool:
       vmImage: ubuntu-latest
       workspace:
@@ -74,10 +71,10 @@ stages:
               deploymentMode: 'Incremental'
 
 - stage: SecretPV
-  displayName: Deploy LogicApp with Secret Pipeline Variables
+  displayName: 'Deploy Secret PV'
   jobs:
-  - deployment: Deploy with Secret Pipeline Variables
-    displayName: Deploy with Secret Pipeline Variables
+  - deployment: 'Deploy Secret PV'
+    displayName: 'Deploy Secret PV'
     pool:
       vmImage: ubuntu-latest
       workspace:
