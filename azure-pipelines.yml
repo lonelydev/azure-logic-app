@@ -37,11 +37,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: $(ResourceManagerConnection)
-    subscriptionName: $(SubscriptionName)
+    ConnectedServiceName: $(G_RES_MGR_CON)
+    subscriptionName: $(G_SUB_NAME)
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'AzureLogicApp'
-    location: $(Location)
+    location: $(G_LOC)
     templateLocation: 'Linked artifact'
     csmFile: '**/LogicApp.json'
     csmParametersFile: '**/LogicApp.parameters.json'
