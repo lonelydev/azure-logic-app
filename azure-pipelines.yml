@@ -169,6 +169,11 @@ stages:
       vmImage: ubuntu-latest
       workspace:
         clean: all
+    variables:
+      ParsedSecretConnectedServiceName: $(PVSConnectedServiceName)
+      ParsedSecretSubscriptionId: $(PVSSubscriptionId)
+      ParsedSecretResourceGroup: $(PVSResourceGroup)
+      ParsedSecretLocation: $(PVSLocation)
     environment: development
     strategy:
       runOnce:
