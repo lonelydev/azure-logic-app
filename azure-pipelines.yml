@@ -4,18 +4,15 @@
 # https://aka.ms/yaml
 
 variables:
-  SECRET_CSN: $(PVSConnectedServiceName)
-  SECRET_SUB: $(PVSSubscriptionId)
-  SECRET_RG: $(PVSResourceGroup)
-  SECRET_LOC: $(PVSLocation)
-
-# - group: azure-logic-app-deploy
-# - name: vgsResourceManagerConnection
-#   value: $[variables.ResourceManagerConnection]
-# - name: vgsSubscriptionName
-#   value: $[variables.SubscriptionName]
-# - name: vgsLocation
-#   value: $[variables.Location]
+- group: azure-logic-app-deploy
+- name: vgsResourceManagerConnection
+  value: $[variables.ResourceManagerConnection]
+- name: vgsSubscriptionName
+  value: $[variables.SubscriptionName]
+- name: vgsLocation
+  value: $[variables.Location]
+- name: vgsResourceGroup
+  value: $[variables.ResourceGroup]  
 
 trigger:
 - master
@@ -181,11 +178,11 @@ stages:
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
-              ConnectedServiceName: $(SECRET_CSN)
-              subscriptionName: $(SECRET_SUB)
+              ConnectedServiceName: $(vgsResourceManagerConnection)
+              subscriptionName: $(vgsSubscriptionName)
               action: 'Create Or Update Resource Group'
-              resourceGroupName: $(SECRET_RG)
-              location: $(SECRET_LOC)
+              resourceGroupName: $(vgsResourceGroup)
+              location: $(vgsLocation)
               templateLocation: 'Linked artifact'
               csmFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.json
               csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
