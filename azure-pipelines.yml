@@ -170,10 +170,10 @@ stages:
       workspace:
         clean: all
     variables:
-      ParsedSecretConnectedServiceName: $(PVSConnectedServiceName)
-      ParsedSecretSubscriptionId: $(PVSSubscriptionId)
-      ParsedSecretResourceGroup: $(PVSResourceGroup)
-      ParsedSecretLocation: $(PVSLocation)
+      ParsedSecretConnectedServiceName: $[variables.PVSConnectedServiceName]
+      ParsedSecretSubscriptionId: $[variables.PVSSubscriptionId]
+      ParsedSecretResourceGroup: $[variables.PVSResourceGroup]
+      ParsedSecretLocation: $[variables.PVSLocation]
     environment: development
     strategy:
       runOnce:
