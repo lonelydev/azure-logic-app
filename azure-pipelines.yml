@@ -48,6 +48,7 @@ stages:
       vmImage: ubuntu-latest
       workspace:
         clean: all
+    environment: development
     strategy:
      runOnce:
        deploy:
@@ -98,6 +99,7 @@ stages:
       vmImage: ubuntu-latest
       workspace:
         clean: all
+    environment: development
     strategy:
      runOnce:
        deploy:
@@ -119,8 +121,21 @@ stages:
   jobs:
   - job:
     steps:
-    - bash: echo "$(PVSConnectedServiceName) $(PVSSubscriptionId) $(PVSLocation)" > pipelinesecrets.txt
+    - task: CmdLine@2
+      inputs:
+        script: 'echo "$(PVSConnectedServiceName) $(PVSSubscriptionId) $(PVSLocation)" > pipelinesecrets.txt'
   
+    - task: CopyFiles@2
+      inputs:
+        Contents: pipelinesecrets.txt
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+  
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+
 # - stage: SecretPV
 #   displayName: DeploySecretPV
 #   jobs:
