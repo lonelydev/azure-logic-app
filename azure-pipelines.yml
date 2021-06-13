@@ -39,16 +39,9 @@ stages:
           csmParametersFile: '**/LogicApp.parameters.json'
           deploymentMode: 'Incremental'
 
-    - task: CopyFiles@2
-      inputs:
-        Contents: |
-          "$(Build.SourcesDirectory)/**/LogicApp.json"
-          "$(Build.SourcesDirectory)/**/LogicApp.parameters.json"
-        targetFolder: $(Build.ArtifactStagingDirectory)
-    
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: $(System.SourcesDirectory)/**/*.json
+        targetPath: $(Build.SourcesDirectory)/**/*.json
         artifactName: drop
 
 - stage: 'HardCodedDeployJobStage'
@@ -65,12 +58,9 @@ stages:
      runOnce:
        deploy:
          steps:
-         - task: DownloadBuildArtifacts@0
+         - task: DownloadPipelineArtifact@2
            inputs:
-             buildType: 'current'
-             downloadType: 'single'
-             artifactName: 'drop'
-             downloadPath: '$(System.ArtifactsDirectory)'
+             artifact: drop
 
          - task: AzureResourceManagerTemplateDeployment@3
            inputs:
@@ -81,8 +71,8 @@ stages:
              resourceGroupName: 'AzureLogicApp'
              location: 'UK South'
              templateLocation: 'Linked artifact'
-             csmFile: '$(System.ArtifactsDirectory)/drop/**/LogicApp.json'
-             csmParametersFile: '$(System.ArtifactsDirectory)/drop/**/LogicApp.parameters.json'
+             csmFile: $(Pipeline.Workspace)/drop/**/LogicApp.json
+             csmParametersFile: $(Pipeline.Workspace)/drop/**/LogicApp.parameters.json
              deploymentMode: 'Incremental'
 
 - stage: RegularPVJobStage
