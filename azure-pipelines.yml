@@ -41,9 +41,7 @@ stages:
     
     - task: CopyFiles@2
       inputs:
-        Contents: |
-          "$(Build.SourcesDirectory)/**/LogicApp.json"
-          "$(Build.SourcesDirectory)/**/LogicApp.parameters.json"
+        Contents: $(Build.SourcesDirectory)/AzureLogicApp/**/*.json
         targetFolder: $(Build.ArtifactStagingDirectory)
     
     - task: PublishPipelineArtifact@1
