@@ -41,7 +41,7 @@ stages:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: $(Build.SourcesDirectory)/**/*.json
+        targetPath: $(Build.SourcesDirectory)
         artifactName: drop
 
 - stage: 'HardCodedDeployJobStage'
