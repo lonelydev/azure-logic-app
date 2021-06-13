@@ -39,6 +39,22 @@ stages:
           csmParametersFile: '**/LogicApp.parameters.json'
           deploymentMode: 'Incremental'
 
+    - task: CopyFiles@2
+      inputs:
+        Contents: $(Build.SourcesDirectory)/**/LogicApp.json
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+    - task: CopyFiles@2
+      inputs:
+        Contents: $(Build.SourcesDirectory)/**/LogicApp.parameters.json
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+      
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+
 - stage: 'HardCodedDeployJobStage'
   displayName: 'HardCodedDeployJobStage'
   jobs:
@@ -62,8 +78,8 @@ stages:
               resourceGroupName: 'AzureLogicApp'
               location: 'UK South'
               templateLocation: 'Linked artifact'
-              csmFile: "$(Build.Repository.LocalPath)/**/LogicApp.json"
-              csmParametersFile: "$(Build.Repository.LocalPath)/**/LogicApp.parameters.json"
+              csmFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.json
+              csmParametersFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.parameters.json
               deploymentMode: 'Incremental'
 
 - stage: RegularPVJobStage
@@ -113,8 +129,8 @@ stages:
              resourceGroupName: $(PVResourceGroup)
              location: $(PVLocation)
              templateLocation: 'Linked artifact'
-             csmFile: "$(Build.Repository.LocalPath)/**/LogicApp.json"
-             csmParametersFile: "$(Build.Repository.LocalPath)/**/LogicApp.parameters.json"
+             csmFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.json
+             csmParametersFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.parameters.json
              deploymentMode: 'Incremental'
 
 - stage: PrintSecrets
