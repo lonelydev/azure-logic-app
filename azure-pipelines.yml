@@ -3,11 +3,11 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-# variables:
-#   ParsedSecretConnectedServiceName: $(PVSConnectedServiceName)
-#   ParsedSecretSubscriptionId: $(PVSSubscriptionId)
-#   ParsedSecretResourceGroup: $(PVSResourceGroup)
-#   ParsedSecretLocation: $(PVSLocation)
+variables:
+  SECRET_CSN: $(PVSConnectedServiceName)
+  SECRET_SUB: $(PVSSubscriptionId)
+  SECRET_RG: $(PVSResourceGroup)
+  SECRET_LOC: $(PVSLocation)
 
 # - group: azure-logic-app-deploy
 # - name: vgsResourceManagerConnection
@@ -169,15 +169,6 @@ stages:
       vmImage: ubuntu-latest
       workspace:
         clean: all
-    variables:
-      - name: ParsedSecretConnectedServiceName
-        value: $(PVSConnectedServiceName)
-      - name: ParsedSecretSubscriptionId
-        value: $(PVSSubscriptionId)
-      - name: ParsedSecretResourceGroup
-        value: $(PVSResourceGroup)
-      - name: ParsedSecretLocation
-        value: $(PVSLocation)
     environment: development
     strategy:
       runOnce:
@@ -190,11 +181,11 @@ stages:
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
-              ConnectedServiceName: $(ParsedSecretConnectedServiceName)
-              subscriptionName: $(ParsedSecretSubscriptionId)
+              ConnectedServiceName: $(SECRET_CSN)
+              subscriptionName: $(SECRET_SUB)
               action: 'Create Or Update Resource Group'
-              resourceGroupName: $(ParsedSecretResourceGroup)
-              location: $(ParsedSecretLocation)
+              resourceGroupName: $(SECRET_RG)
+              location: $(SECRET_LOC)
               templateLocation: 'Linked artifact'
               csmFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.json
               csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
