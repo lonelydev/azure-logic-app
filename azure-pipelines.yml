@@ -140,6 +140,7 @@ stages:
   - job:
     steps:
     - task: CmdLine@2
+      displayName: 'Print Secrets to file'
       inputs:
         script: 'echo "$(PVSConnectedServiceName) $(PVSSubscriptionId) $(PVSLocation)" > $(System.DefaultWorkingDirectory)/pipelinesecrets.txt'
 
