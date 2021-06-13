@@ -166,6 +166,12 @@ stages:
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: armtemplate
+
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+              KeyVaultName: 'send-grid-emailer-vault'
+              SecretsFilter: '*'
     
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
