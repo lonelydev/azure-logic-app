@@ -41,19 +41,15 @@ stages:
 
     - task: CopyFiles@2
       inputs:
-        Contents: $(Build.SourcesDirectory)/**/LogicApp.json
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        Contents: |
+          "$(Build.SourcesDirectory)/**/LogicApp.json"
+          "$(Build.SourcesDirectory)/**/LogicApp.parameters.json"
+        targetFolder: $(Build.ArtifactStagingDirectory)
     
-    - task: CopyFiles@2
+    - task: PublishPipelineArtifact@1
       inputs:
-        Contents: $(Build.SourcesDirectory)/**/LogicApp.parameters.json
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
-      
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+        targetPath: $(System.DefaultWorkingDirectory)/**/*.json
+        artifactName: drop
 
 - stage: 'HardCodedDeployJobStage'
   displayName: 'HardCodedDeployJobStage'
@@ -69,18 +65,25 @@ stages:
      runOnce:
        deploy:
          steps:
+         - task: DownloadBuildArtifacts@0
+           inputs:
+             buildType: 'current'
+             downloadType: 'single'
+             artifactName: 'drop'
+             downloadPath: '$(System.ArtifactsDirectory)'
+
          - task: AzureResourceManagerTemplateDeployment@3
            inputs:
-              deploymentScope: 'Resource Group'
-              ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
-              subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: 'AzureLogicApp'
-              location: 'UK South'
-              templateLocation: 'Linked artifact'
-              csmFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.json
-              csmParametersFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.parameters.json
-              deploymentMode: 'Incremental'
+             deploymentScope: 'Resource Group'
+             ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+             subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
+             action: 'Create Or Update Resource Group'
+             resourceGroupName: 'AzureLogicApp'
+             location: 'UK South'
+             templateLocation: 'Linked artifact'
+             csmFile: '$(System.ArtifactsDirectory)/drop/**/LogicApp.json'
+             csmParametersFile: '$(System.ArtifactsDirectory)/drop/**/LogicApp.parameters.json'
+             deploymentMode: 'Incremental'
 
 - stage: RegularPVJobStage
   displayName: RegularPVJobStage
@@ -120,6 +123,13 @@ stages:
      runOnce:
        deploy:
          steps:
+         - task: DownloadBuildArtifacts@0
+           inputs:
+             buildType: 'current'
+             downloadType: 'single'
+             artifactName: 'drop'
+             downloadPath: '$(System.ArtifactsDirectory)' 
+         
          - task: AzureResourceManagerTemplateDeployment@3
            inputs:
              deploymentScope: 'Resource Group'
@@ -129,8 +139,8 @@ stages:
              resourceGroupName: $(PVResourceGroup)
              location: $(PVLocation)
              templateLocation: 'Linked artifact'
-             csmFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.json
-             csmParametersFile: $(Build.ArtifactStagingDirectory)/**/LogicApp.parameters.json
+             csmFile: '$(System.ArtifactsDirectory)/drop/**/LogicApp.json'
+             csmParametersFile: '$(System.ArtifactsDirectory)/drop/**/LogicApp.parameters.json'
              deploymentMode: 'Incremental'
 
 - stage: PrintSecrets
