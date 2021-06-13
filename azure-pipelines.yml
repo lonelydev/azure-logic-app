@@ -3,11 +3,11 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-variables:
-  ParsedSecretConnectedServiceName: $(PVSConnectedServiceName)
-  ParsedSecretSubscriptionId: $(PVSSubscriptionId)
-  ParsedSecretResourceGroup: $(PVSResourceGroup)
-  ParsedSecretLocation: $(PVSLocation)
+# variables:
+#   ParsedSecretConnectedServiceName: $(PVSConnectedServiceName)
+#   ParsedSecretSubscriptionId: $(PVSSubscriptionId)
+#   ParsedSecretResourceGroup: $(PVSResourceGroup)
+#   ParsedSecretLocation: $(PVSLocation)
 
 # - group: azure-logic-app-deploy
 # - name: vgsResourceManagerConnection
