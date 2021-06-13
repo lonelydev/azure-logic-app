@@ -38,10 +38,17 @@ stages:
           csmFile: '**/LogicApp.json'
           csmParametersFile: '**/LogicApp.parameters.json'
           deploymentMode: 'Incremental'
-
+    
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          "$(Build.SourcesDirectory)/**/LogicApp.json"
+          "$(Build.SourcesDirectory)/**/LogicApp.parameters.json"
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: $(Build.SourcesDirectory)/**/*.json
+        targetPath: $(Build.ArtifactStagingDirectory)
         artifactName: armtemplate
 
 - stage: 'HardCodedDeployJobStage'
@@ -71,8 +78,8 @@ stages:
              resourceGroupName: 'AzureLogicApp'
              location: 'UK South'
              templateLocation: 'Linked artifact'
-             csmFile: $(Pipeline.Workspace)/drop/**/LogicApp.json
-             csmParametersFile: $(Pipeline.Workspace)/drop/**/LogicApp.parameters.json
+             csmFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.json
+             csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
              deploymentMode: 'Incremental'
 
 - stage: RegularPVJobStage
@@ -126,8 +133,8 @@ stages:
              resourceGroupName: $(PVResourceGroup)
              location: $(PVLocation)
              templateLocation: 'Linked artifact'
-             csmFile: $(Pipeline.Workspace)/drop/**/LogicApp.json
-             csmParametersFile: $(Pipeline.Workspace)/drop/**/LogicApp.parameters.json
+             csmFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.json
+             csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
              deploymentMode: 'Incremental'
 
 - stage: PrintSecrets
