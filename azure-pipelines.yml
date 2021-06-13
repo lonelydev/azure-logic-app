@@ -80,11 +80,11 @@ stages:
              csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
              deploymentMode: 'Incremental'
 
-- stage: RegularPVJobStage
-  displayName: RegularPVJobStage
+- stage: PVJobStage
+  displayName: PVJobStage
   jobs:
-  - job: RegularPVJob
-    displayName: RegularPVJob
+  - job: PVJob
+    displayName: PVJob
     pool:
       vmImage: ubuntu-latest
       workspace:
@@ -104,11 +104,11 @@ stages:
         deploymentMode: 'Incremental'
 
 
-- stage: RegularPVDeployJobStage
-  displayName: RegularPVDeployJobStage
+- stage: PVDeployJobStage
+  displayName: PVDeployJobStage
   jobs:
-  - deployment: RegularPVDeployJob
-    displayName: RegularPVDeployJob
+  - deployment: PVDeployJob
+    displayName: PVDeployJob
     pool:
       vmImage: ubuntu-latest
       workspace:
@@ -153,6 +153,38 @@ stages:
       inputs:
         targetPath: $(Build.ArtifactStagingDirectory)/secrets
         artifactName: secretdrop
+
+
+- stage: PVSDeployJobStage
+  displayName: PVSDeployJobStage
+  jobs:
+  - deployment: PVSDeployJob
+    displayName: PVSDeployJob
+    pool:
+      vmImage: ubuntu-latest
+      workspace:
+        clean: all
+    environment: development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: armtemplate
+    
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              ConnectedServiceName: $(PVSConnectedServiceName)
+              subscriptionName: $(PVSSubscriptionId)
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: $(PVSResourceGroup)
+              location: $(PVSLocation)
+              templateLocation: 'Linked artifact'
+              csmFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.json
+              csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
+              deploymentMode: 'Incremental'
 
 # - stage: SecretPV
 #   displayName: DeploySecretPV
