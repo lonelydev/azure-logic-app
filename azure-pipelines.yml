@@ -4,22 +4,18 @@
 # https://aka.ms/yaml
 
 variables:
-- name: ParsedSecretConnectedServiceName
-  value: $(PVSConnectedServiceName)
-- name: ParsedSecretSubscriptionId
-  value: $(PVSSubscriptionId)
-- name: ParsedSecretResourceGroup
-  value: $(PVSResourceGroup)
-- name: ParsedSecretLocation
-  value: $(PVSLocation)
+  ParsedSecretConnectedServiceName: $(PVSConnectedServiceName)
+  ParsedSecretSubscriptionId: $(PVSSubscriptionId)
+  ParsedSecretResourceGroup: $(PVSResourceGroup)
+  ParsedSecretLocation: $(PVSLocation)
 
-- group: azure-logic-app-deploy
-- name: vgsResourceManagerConnection
-  value: $[variables.ResourceManagerConnection]
-- name: vgsSubscriptionName
-  value: $[variables.SubscriptionName]
-- name: vgsLocation
-  value: $[variables.Location]
+# - group: azure-logic-app-deploy
+# - name: vgsResourceManagerConnection
+#   value: $[variables.ResourceManagerConnection]
+# - name: vgsSubscriptionName
+#   value: $[variables.SubscriptionName]
+# - name: vgsLocation
+#   value: $[variables.Location]
 
 trigger:
 - master
