@@ -1,0 +1,52 @@
+
+stages:
+- stage: 'PipelineArtifactPublishStage'
+  displayName: 'PipelineArtifactPublishStage'
+  jobs:
+  - job: 'PipelineArtifactPublishJob'
+    displayName: PipelineArtifactPublishJob
+    pool:
+      vmImage: ubuntu-latest
+      workspace:
+        clean: all
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        Contents: $(Build.SourcesDirectory)/AzureLogicApp/**/*.json
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)
+        artifactName: armtemplate
+        
+- stage: 'HardCodedDeployJobStage'
+  displayName: 'HardCodedDeployJobStage'
+  jobs:
+  - deployment: 'HardCodedDeployJob'
+    displayName: HardCodedDeployJob
+    pool:
+      vmImage: ubuntu-latest
+      workspace:
+        clean: all
+    environment: development
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+         - task: DownloadPipelineArtifact@2
+           inputs:
+             artifact: armtemplate
+
+         - task: AzureResourceManagerTemplateDeployment@3
+           inputs:
+             deploymentScope: 'Resource Group'
+             ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+             subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
+             action: 'Create Or Update Resource Group'
+             resourceGroupName: 'AzureLogicApp'
+             location: 'UK South'
+             templateLocation: 'Linked artifact'
+             csmFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.json
+             csmParametersFile: $(Pipeline.Workspace)/armtemplate/**/LogicApp.parameters.json
+             deploymentMode: 'Incremental'

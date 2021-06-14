@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+stages:
+  - stage: 'HardcodedJobStage'
+    displayName: 'HardcodedJobStage'
+    jobs:
+    - job: 'HardcodedJob'
+      displayName: HardcodedJob
+      pool:
+        vmImage: ubuntu-latest
+        workspace:
+          clean: all
+      steps:
+      - task: AzureResourceManagerTemplateDeployment@3
+        inputs:
+            deploymentScope: 'Resource Group'
+            ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+            subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: 'AzureLogicApp'
+            location: 'UK South'
+            templateLocation: 'Linked artifact'
+            csmFile: '**/LogicApp.json'
+            csmParametersFile: '**/LogicApp.parameters.json'
+            deploymentMode: 'Incremental'
+      
