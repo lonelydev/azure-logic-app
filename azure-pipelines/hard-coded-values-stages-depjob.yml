@@ -43,7 +43,7 @@ stages:
          - task: AzureResourceManagerTemplateDeployment@3
            inputs:
              deploymentScope: 'Resource Group'
-             ConnectedServiceName: 'Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)'
+             ConnectedServiceName: 'pssub-azlogicapprg'
              subscriptionName: 'd6d0fd8c-aab6-4713-b2f1-c9a0375d687d'
              action: 'Create Or Update Resource Group'
              resourceGroupName: 'AzureLogicApp'

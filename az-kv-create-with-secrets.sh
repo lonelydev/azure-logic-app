@@ -8,7 +8,7 @@ resourceGroupName="AzureLogicApp"        #Name of the resource group for the vau
 resourceGroupLocation="UK South"   #Location of the resource group if it needs to be created
 
 resourceGroupConnVarName="ResourceManagerConnection"
-resourceGroupConnVarValue="Pluralsight (d6d0fd8c-aab6-4713-b2f1-c9a0375d687d)"
+resourceGroupConnVarValue="pssub-azlogicapprg"
 
 subscriptionNameVarName="SubscriptionName"
 subscriptionNameVarValue="d6d0fd8c-aab6-4713-b2f1-c9a0375d687d"
