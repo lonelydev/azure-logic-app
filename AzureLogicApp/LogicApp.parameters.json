@@ -11,7 +11,7 @@
     "sendgrid_1_apiKey": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/d6d0fd8c-aab6-4713-b2f1-c9a0375d687d/resourceGroups/AzureLogicApp/providers/Microsoft.KeyVault/vaults/send-grid-emailer-vault"
+          "id": "/subscriptions/d6d0fd8c-aab6-4713-b2f1-c9a0375d687d/resourceGroups/AzureLogicApp/providers/Microsoft.KeyVault/vaults/az-lga-sendgrid-vault"
         },
         "secretName": "SendGridApiKey"
       }
